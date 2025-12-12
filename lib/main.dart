@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:learningfirebase/constants/routes.dart';
 import 'package:learningfirebase/firebase_options.dart';
 import 'package:learningfirebase/views/login_views.dart';
 import 'package:learningfirebase/views/register_view.dart';
@@ -15,9 +16,9 @@ void main() {
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.blueAccent)),
       home: const HomePage(),
       routes: {
-        "/login/": (context) => const LoginView(),
-        "/register/": (context) => const RegisterView(),
-        "/notes/": (context) => const NotesView(),
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
       },
     ),
   );
@@ -81,7 +82,7 @@ class _NotesViewState extends State<NotesView> {
                     Navigator.of(
                       // ignore: use_build_context_synchronously
                       context,
-                    ).pushNamedAndRemoveUntil('/login/', (_) => false);
+                    ).pushNamedAndRemoveUntil(loginRoute, (_) => false);
                   }
               }
             },
