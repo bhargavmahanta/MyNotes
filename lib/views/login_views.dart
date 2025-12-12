@@ -1,4 +1,6 @@
-import 'dart:developer' as devtools show log;
+// import 'dart:developer' as devtools show log;
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learningfirebase/constants/routes.dart';
@@ -55,26 +57,23 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                      email: email,
-                      password: password,
-                    );
-                Navigator.of(
-                  // ignore: use_build_context_synchronously
-                  context,
-                ).pushNamedAndRemoveUntil(
-                  notesRoute, 
-                  (route) => false,
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                  email: email,
+                  password: password,
                 );
+                Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on FirebaseAuthException catch (e) {
                 if (e.code == "user-not-found") {
-                  devtools.log("User is not found");
+                  await showErrorDialoge(context, "User not found");
                 } else if (e.code == "wrong-password") {
-                  devtools.log("Wrong pasword");
+                  await showErrorDialoge(context, "Wrong credentials");
                 } else {
-                  devtools.log("Something else happend");
+                  await showErrorDialoge(context, "Error: ${e.code}");
                 }
+              } catch (e){
+                await showErrorDialoge(context, e.toString());
               }
             },
             child: const Text("Login"),
@@ -91,4 +90,25 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+}
+
+Future<void> showErrorDialoge(BuildContext context, String text) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("An error accured"),
+        content: Text(text),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Overlays are better in this case, but we will use Navigator for beginner
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      );
+    },
+  );
 }
