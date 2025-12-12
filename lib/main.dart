@@ -5,7 +5,6 @@ import 'package:learningfirebase/constants/routes.dart';
 import 'package:learningfirebase/firebase_options.dart';
 import 'package:learningfirebase/views/login_views.dart';
 import 'package:learningfirebase/views/register_view.dart';
-import 'package:learningfirebase/views/show_error_dialog.dart';
 import 'package:learningfirebase/views/verify_email_view.dart';
 // import 'dart:developer' as devtools show log;
 

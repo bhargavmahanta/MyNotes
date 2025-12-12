@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
+Future<void> showErrorDialoge(BuildContext context, String text) {
+  return showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text("Sign out"),
-        content: const Text("Are you sure you want to log out?"),
+        title: const Text("An error accured"),
+        content: Text(text),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(false);
+              // Overlays are better in this case, but we will use Navigator for beginner
+              Navigator.of(context).pop();
             },
-            child: const Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text("Log out"),
+            child: const Text("OK"),
           ),
         ],
       );
     },
-  ).then((value) => value ?? false);
+  );
 }

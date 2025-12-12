@@ -4,6 +4,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learningfirebase/constants/routes.dart';
+import 'package:learningfirebase/views/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -92,23 +93,29 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-Future<void> showErrorDialoge(BuildContext context, String text) {
-  return showDialog(
+Future<bool> showLogOutDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text("An error accured"),
-        content: Text(text),
+        title: const Text("Sign out"),
+        content: const Text("Are you sure you want to log out?"),
         actions: [
           TextButton(
             onPressed: () {
-              // Overlays are better in this case, but we will use Navigator for beginner
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             },
-            child: const Text("OK"),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: const Text("Log out"),
           ),
         ],
       );
     },
-  );
+  ).then((value) => value ?? false);
 }
+
