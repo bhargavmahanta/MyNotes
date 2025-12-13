@@ -19,14 +19,7 @@ class _NotesViewState extends State<NotesView> {
   @override
   void initState() {
     _notesService = NotesService();
-    _notesService.open();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
   }
 
   @override
@@ -70,20 +63,39 @@ class _NotesViewState extends State<NotesView> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              return StreamBuilder(
-                stream: _notesService.allNotes,
+              final user = snapshot.data as DatabaseUser;
+              return StreamBuilder<List<DatabaseNote>>(
+                stream: _notesService.allNotes(userId: user.id),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                     case ConnectionState.active:
-                      return const Text("Waiting for notes...");
+                      if (snapshot.hasData){
+                        final allNotes = snapshot.data as List<DatabaseNote>;
+                        print(allNotes);
+                        return ListView.builder(
+                          itemCount: allNotes.length,
+                          itemBuilder: (context, index){
+                            final note = allNotes[index];
+                            return ListTile(
+                              title: Text(
+                                note.text,
+                                maxLines: 1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                        });
+                      }else{
+                        return const Center(child: CircularProgressIndicator());
+                      }
                     default:
-                      return CircularProgressIndicator();
+                      return const Center(child: CircularProgressIndicator());
                   }
                 },
               );
             default:
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
           }
         },
       ),
