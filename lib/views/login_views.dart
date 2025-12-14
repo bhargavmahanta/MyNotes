@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:learningfirebase/constants/routes.dart';
 import 'package:learningfirebase/services/auth/auth_exceptions.dart';
 import 'package:learningfirebase/services/auth/auth_service.dart';
-import 'package:learningfirebase/views/show_error_dialog.dart';
+import 'package:learningfirebase/utilities/dialogs/error_dialog.dart';
+
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -73,11 +74,11 @@ class _LoginViewState extends State<LoginView> {
                   ).pushNamedAndRemoveUntil(verifyEmailRoute, (route) => false);
                 }
               } on UserNotFoundAuthException{
-                await showErrorDialoge(context, "User not found");
+                await showErrorDialog(context, "User not found");
               } on WrongPasswordAuthException{
-                await showErrorDialoge(context, "Wrong credentials");
+                await showErrorDialog(context, "Wrong credentials");
               } on GenericAuthException{
-                await showErrorDialoge(context, "Authentication error");
+                await showErrorDialog(context, "Authentication error");
               }
             },
             child: const Text("Login"),
