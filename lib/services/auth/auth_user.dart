@@ -25,7 +25,9 @@ import 'package:flutter/foundation.dart';
 ///
 @immutable
 class AuthUser {
-  final String? email;
+  final String id;
+  final String email;
+
   /// Indicates whether the user has verified their email address.
   ///
   /// WHY THIS FIELD EXISTS:
@@ -43,7 +45,11 @@ class AuthUser {
   /// - Enables compile-time optimizations
   /// - Reinforces immutability
   /// - Improves predictability of app state
-  const AuthUser({required this.isEmailVerified, required this.email});
+  const AuthUser({
+    required this.isEmailVerified,
+    required this.email,
+    required this.id,
+  });
 
   /// Factory constructor that converts a Firebase User
   /// into an application-level AuthUser.
@@ -59,6 +65,9 @@ class AuthUser {
   ///
   /// This method is the ONLY place where Firebase User
   /// is allowed to be translated into AuthUser.
-  factory AuthUser.fromFirebase(User user) =>
-      AuthUser(isEmailVerified: user.emailVerified, email: user.email ?? '');
+  factory AuthUser.fromFirebase(User user) => AuthUser(
+    isEmailVerified: user.emailVerified,
+    email: user.email!,
+    id: user.uid,
+  );
 }
