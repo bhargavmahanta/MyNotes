@@ -64,9 +64,9 @@ class _NotesViewState extends State<NotesView> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              final user = snapshot.data as DatabaseUser;
-              return StreamBuilder<List<DatabaseNote>>(
-                stream: _notesService.allNotes(userId: user.id),
+              // final user = snapshot.data as DatabaseUser;
+              return StreamBuilder(
+                stream: _notesService.allNotes,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
