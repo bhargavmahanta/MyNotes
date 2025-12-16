@@ -76,7 +76,7 @@ abstract class AuthProvider {
   /// PROFESSIONAL BENEFIT:
   /// - UI does not know about tokens or sessions
   /// - Backend logic remains isolated
-  Future<AuthUser?> logIn({
+  Future<AuthUser> logIn({
     required String email,
     required String password,
   });
@@ -98,7 +98,7 @@ abstract class AuthProvider {
   /// PROFESSIONAL BENEFIT:
   /// - Clear separation of responsibilities
   /// - Supports future providers without UI changes
-  Future<AuthUser?> createUser({
+  Future<AuthUser> createUser({
     required String email,
     required String password,
   });

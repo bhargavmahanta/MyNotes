@@ -144,7 +144,7 @@ class FirebaseAuthProvider implements AuthProvider {
   /// - Error translation
   /// - Domain user abstraction
   @override
-  Future<AuthUser?> logIn({
+  Future<AuthUser> logIn({
     required String email,
     required String password,
   }) async {

@@ -47,7 +47,7 @@ void main() {
       /// calling good user
       final user = await provider.createUser(email: "foo", password: "bar");
       expect(provider.currentUser, user);
-      expect(user?.isEmailVerified, false);
+      expect(user.isEmailVerified, false);
       });
 
       test("logged in user should be able tot get verified", () async {
@@ -79,7 +79,7 @@ class MockAuthProvider implements AuthProvider {
   /// 2. It does a mock 1 sec wait to simulate initialization delay (faking api call)
   /// 3. Returns the result of Login to get the created user
   @override
-  Future<AuthUser?> createUser({
+  Future<AuthUser> createUser({
     required String email,
     required String password,
   }) async {
@@ -107,7 +107,7 @@ class MockAuthProvider implements AuthProvider {
   /// 4. Otherwise it creates a new AuthUser with isEmailVerified set to false
   ///    and assigns it to _user and returns it
   @override
-  Future<AuthUser?> logIn({required String email, required String password}) {
+  Future<AuthUser> logIn({required String email, required String password}) {
     if (!isInitialized) throw NotInitializedException();
     if (email == 'foo@bar.com') throw UserNotFoundAuthException();
     if (password == 'foobar') throw WrongPasswordAuthException();

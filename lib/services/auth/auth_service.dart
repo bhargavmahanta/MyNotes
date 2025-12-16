@@ -94,7 +94,7 @@ class AuthService implements AuthProvider {
   /// - An AuthUser (your app model)
   /// - OR null if creation fails
   @override
-  Future<AuthUser?> createUser({
+  Future<AuthUser> createUser({
     required String email,
     required String password,
   }) => provider.createUser(email: email, password: password);
@@ -121,7 +121,7 @@ class AuthService implements AuthProvider {
   ///
   /// The UI never sees tokens, sessions, or providers.
   @override
-  Future<AuthUser?> logIn({required String email, required String password}) =>
+  Future<AuthUser> logIn({required String email, required String password}) =>
       provider.logIn(email: email, password: password);
 
   /// Logs out the current user.
