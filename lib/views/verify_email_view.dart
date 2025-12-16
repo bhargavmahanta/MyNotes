@@ -1,14 +1,15 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:learningfirebase/constants/routes.dart';
-import 'package:learningfirebase/services/auth/auth_service.dart';
+import 'package:learningfirebase/services/auth/bloc/auth_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learningfirebase/services/auth/bloc/auth_event.dart';
 
 class VerifyEmailView extends StatefulWidget {
-  const VerifyEmailView({super.key});
+  const VerifyEmailView({Key? key}) : super(key: key);
 
   @override
-  State<VerifyEmailView> createState() => _VerifyEmailViewState();
+  _VerifyEmailViewState createState() => _VerifyEmailViewState();
 }
 
 class _VerifyEmailViewState extends State<VerifyEmailView> {
@@ -16,27 +17,30 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Verify Email"),
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
+        title: const Text('Verify email'),
       ),
       body: Column(
         children: [
-          Text("We've sent a verification email to:"),
-          Text("\nIf you haven't received a verification email yet, press the button below"),
+          const Text(
+              "We've sent you an email verification. Please open it to verify your account."),
+          const Text(
+              "If you haven't received a verification email yet, press the button below"),
+          TextButton(
+            onPressed: () {
+              context.read<AuthBloc>().add(
+                    const AuthEventSendEmailVerification(),
+                  );
+            },
+            child: const Text('Send email verification'),
+          ),
           TextButton(
             onPressed: () async {
-              AuthService.firebase().sendEmailVerification();
+              context.read<AuthBloc>().add(
+                    const AuthEventLogOut(),
+                  );
             },
-            child: const Text("Send Email Verification"),
-          ),
-          TextButton(onPressed: () async {
-            await AuthService.firebase().logOut();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              registerRoute,
-              (route) => false,
-            );
-          }, child: const Text("Restart")),
+            child: const Text('Restart'),
+          )
         ],
       ),
     );
