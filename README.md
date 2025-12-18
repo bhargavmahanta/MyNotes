@@ -1,4 +1,4 @@
-# LearningFirebase – Flutter Notes App with Firebase Authentication
+# MyNotes – Flutter Notes App with Firebase Authentication
 
 A Flutter application demonstrating **Firebase Authentication** integrated with **Bloc (flutter_bloc)** for state management. The app implements a complete authentication flow (register, login, email verification, logout) and a simple **notes management system** with create and update functionality.
 
