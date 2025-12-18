@@ -131,5 +131,7 @@ abstract class AuthProvider {
   /// - Future-proof verification flows
   /// - Clean separation between UI and auth mechanics
   Future<void> sendEmailVerification();
+  Future<void> sendPasswordResetEmail({required String toEmail});
 }
+
 

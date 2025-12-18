@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:learningfirebase/services/auth/auth_user.dart';
 import 'package:equatable/equatable.dart';
@@ -22,6 +24,16 @@ class AuthStateRegistering extends AuthState {
   const AuthStateRegistering({
     required this.exception,
     required isLoading,
+  }) : super(isLoading: isLoading);
+}
+
+class AuthStateForgotPassword extends AuthState {
+  final Exception? exception;
+  final bool hasSentEmail;
+  const AuthStateForgotPassword({
+    required this.exception,
+    required this.hasSentEmail,
+    required bool isLoading,
   }) : super(isLoading: isLoading);
 }
 

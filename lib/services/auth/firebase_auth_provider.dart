@@ -24,6 +24,7 @@ import 'package:learningfirebase/services/auth/auth_provider.dart';
 // These replace FirebaseAuthException so the UI
 // never depends on Firebase error codes.
 import 'package:learningfirebase/services/auth/auth_exceptions.dart';
+
 /// Import only the required Firebase Auth classes.
 ///
 ///`show` is used to:
@@ -154,7 +155,7 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
-       // Fetch authenticated user.
+      // Fetch authenticated user.
       final user = currentUser;
       if (user != null) {
         return user;
@@ -189,7 +190,7 @@ class FirebaseAuthProvider implements AuthProvider {
   Future<void> logOut() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-       // Explicitly sign out.
+      // Explicitly sign out.
       await FirebaseAuth.instance.signOut();
     } else {
       // Prevents silent failures.
@@ -197,7 +198,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
-   /// -------------------------------------------------------------------------
+  /// -------------------------------------------------------------------------
   /// EMAIL VERIFICATION
   /// -------------------------------------------------------------------------
   ///
@@ -236,5 +237,23 @@ class FirebaseAuthProvider implements AuthProvider {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail({required String toEmail}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: toEmail);
+    } on FirebaseAuthException catch(e){
+      switch(e.code){
+        case 'firebase_auth/user-not-found':
+          throw UserNotFoundAuthException();
+        case 'firebase_auth/invalid-email':
+          throw InvalidEmailAuthException();
+        default:
+          throw GenericAuthException();
+      }
+    }catch (_) {
+      throw GenericAuthException();
+    }
   }
 }
